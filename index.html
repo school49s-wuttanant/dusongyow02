@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบใบลาออนไลน์ - โรงเรียนบ้านดุซงยอ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .form-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="py-10 px-4">
+
+    <div class="max-w-2xl mx-auto">
+        <div class="form-card p-8">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-blue-600">แบบฟอร์มใบลาออนไลน์</h1>
+                <h2 class="text-xl font-semibold text-gray-700 mt-1">โรงเรียนบ้านดุซงยอ</h2>
+                <p class="text-gray-500 mt-2">กรุณากรอกข้อมูลการลาให้ครบถ้วน</p>
+            </div>
+
+            <form id="leaveForm" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- ลงวันที่ -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">ลงวันที่</label>
+                        <input type="date" name="requestDate" id="requestDate" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+                    </div>
+                    <!-- ชื่อ-สกุล -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">ชื่อ-นามสกุล</label>
+                        <input list="nameList" name="fullName" id="fullName" required placeholder="พิมพ์เพื่อค้นหาหรือระบุชื่อ..." class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+                        <datalist id="nameList">
+                            <option value="นายนิชาฟีอี หะยีแวสามะ">
+                            <option value="นายทวีวัฒน์ ทองคำ">
+                            <option value="นางนอร์อัยนี หะยีแวสามะ">
+                            <option value="นางคอซัยหม๊ะ ตาเละ">
+                            <option value="นางมยุรี ลีกี">
+                            <option value="นายอรุณศักดิ์ มะเกะ">
+                            <option value="นายอับดุลอาซิด มามะ">
+                            <option value="นายอาหามะ ปูเต๊ะ">
+                            <option value="นางสูใบดะห์ มะเซ็ง">
+                            <option value="นางนุสนาวาตี อาละ">
+                            <option value="นางวานิดา เจ๊ะแม">
+                            <option value="นายนัสรูดดีน ยะอิง">
+                            <option value="นางนูรูฮูดา ดาราโอ๊ะ">
+                            <option value="นางซามีฮะห์ ยะอิง">
+                            <option value="นางสาวมีละห์ มะมิง">
+                            <option value="นางสาวลาวิณี วาเตะ">
+                            <option value="นางสาวนูรฮาฟีซา เปาะแต">
+                            <option value="นางสาวซุลฮา สาแล๊ะ">
+                            <option value="นางสาวไซหนับ ยูโซ๊ะ">
+                            <option value="นางสาวนูรีฮา ยามา">
+                            <option value="นางโซเฟีย เย็ง">
+                            <option value="นางนิฮาซีมะห์ ซี">
+                            <option value="นายมาซีบี สะแวบาโง">
+                            <option value="นายอุสมาน สาและ">
+                            <option value="นายมามะซักรี หะยีหูซอ">
+                            <option value="นางอาอีด๊ะ มะ">
+                            <option value="นายซัมรี เจ๊ะแม">
+                            <option value="นายเฮง มะดีเยาะ">
+                            <option value="นางสาวแอเสาะ ปูตา">
+                            <option value="นายวุฒนันท์ เจ๊ะดาโอะ">
+                            <option value="นายมรี สะมะแอ">
+                            <option value="นายอับดุลเลาะ ดือเร๊ะ">
+                            <option value="นางสาวนูรูลฮูดา มะเย็ง">
+                            <option value="นายอัลฟินน์ ดาหะแม">
+                        </datalist>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- ตำแหน่ง -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">ตำแหน่ง</label>
+                        <input list="positionList" name="position" id="position" required placeholder="เลือกหรือพิมพ์ตำแหน่ง..." class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+                        <datalist id="positionList">
+                            <option value="รองผู้อำนวยการ">
+                            <option value="ครู">
+                            <option value="พนักงานราชการ">
+                            <option value="พี่เลี้ยงเด็กพิการ">
+                            <option value="ธุรการโรงเรียน">
+                            <option value="วิทยากรอิสลาม">
+                            <option value="รภป.โรงเรียน">
+                            <option value="ภารโรง">
+                            <option value="ครูโรงเรียนจ้าง">
+                        </datalist>
+                    </div>
+                    <!-- ประเภทการลา -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">ประเภทการลา</label>
+                        <select name="leaveType" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+                            <option value="">-- เลือกประเภทการลา --</option>
+                            <option value="ลากิจ">ลากิจ</option>
+                            <option value="ลาป่วย">ลาป่วย</option>
+                            <option value="ลาคลอดบุตร">ลาคลอดบุตร</option>
+                            <option value="ลาประกอบพิธีฮัจย์">ลาประกอบพิธีฮัจย์</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- สาเหตุการลา -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">สาเหตุการลา เนื่องจาก</label>
+                    <textarea name="reason" rows="2" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border"></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- เริ่มลา -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">เริ่มลาวันที่</label>
+                        <input type="date" name="startDate" id="startDate" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+                    </div>
+                    <!-- ถึงวันที่ -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">ถึงวันที่</label>
+                        <input type="date" name="endDate" id="endDate" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+                    </div>
+                    <!-- จำนวนวัน -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">จำนวนวันลา</label>
+                        <input list="daysOptions" type="text" name="totalDays" id="totalDays" required placeholder="0" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+                        <datalist id="daysOptions">
+                            <option value="0.5">
+                            <option value="1">
+                            <option value="1.5">
+                            <option value="2">
+                        </datalist>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- โทรศัพท์ -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">หมายเลขโทรศัพท์</label>
+                        <input type="tel" name="phone" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+                    </div>
+                    <!-- ผู้รับมอบงาน -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">ได้มอบหมายงานให้</label>
+                        <input type="text" name="assignee" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+                    </div>
+                </div>
+
+                <div class="pt-4">
+                    <button type="submit" id="submitBtn" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition duration-200">
+                        ส่งใบลาและดาวน์โหลด PDF
+                    </button>
+                </div>
+            </form>
+
+            <div id="statusMessage" class="mt-4 p-4 rounded-lg hidden text-center"></div>
+
+            <!-- ข้อความผู้จัดทำด้านล่างสุด -->
+            <div class="mt-10 pt-4 border-t border-gray-100 text-center">
+                <p class="text-sm text-gray-400">จัดทำโดย นายวุฒนันท์ เจ๊ะดาโอะ ธุรการโรงเรียน</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzPBnMkS_UzJOIj-jfeLFiqVRZIIEAu6y71OrcMquDyQdzVU-JOLKlvL6rTcAhWVrsZ/exec';
+        
+        // --- Telegram Configuration ---
+        const TELEGRAM_BOT_TOKEN = '8542087374:AAHrhLaRc6D7zPrZ09bEIG1mKNwtC52sbrM'; 
+        const TELEGRAM_CHAT_ID = '1867755109';
+
+        // ฟังก์ชันคำนวณจำนวนวันอัตโนมัติ
+        function calculateDays() {
+            const start = document.getElementById('startDate').value;
+            const end = document.getElementById('endDate').value;
+            if (start && end) {
+                const startDate = new Date(start);
+                const endDate = new Date(end);
+                const diffTime = endDate - startDate;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+                
+                if (diffDays > 0) {
+                    document.getElementById('totalDays').value = diffDays;
+                } else if (diffDays === 0) {
+                    document.getElementById('totalDays').value = 1;
+                } else {
+                    document.getElementById('totalDays').value = "";
+                }
+            }
+        }
+
+        document.getElementById('startDate').addEventListener('change', calculateDays);
+        document.getElementById('endDate').addEventListener('change', calculateDays);
+
+        function formatThaiDateDisplay(dateString) {
+            if (!dateString) return "";
+            const months = [
+                "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+                "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+            ];
+            const date = new Date(dateString);
+            const day = date.getDate();
+            const month = months[date.getMonth()];
+            const year = date.getFullYear() + 543;
+            return `${day} ${month} ${year}`;
+        }
+
+        document.getElementById('requestDate').valueAsDate = new Date();
+
+        const form = document.getElementById('leaveForm');
+        const btn = document.getElementById('submitBtn');
+        const status = document.getElementById('statusMessage');
+
+        // ฟังก์ชันส่งการแจ้งเตือนไปยัง Telegram
+        async function sendTelegramMessage(data, pdfUrl) {
+            if (!TELEGRAM_BOT_TOKEN) return;
+
+            const text = `📌 *มีรายการแจ้งลาใหม่ (รร.บ้านดุซงยอ)*\n\n` +
+                         `👤 *ชื่อ:* ${data.fullName}\n` +
+                         `💼 *ตำแหน่ง:* ${data.position}\n` +
+                         `📝 *ประเภท:* ${data.leaveType}\n` +
+                         `📅 *วันที่ลา:* ${data.startDateThai} ถึง ${data.endDateThai}\n` +
+                         `⏱️ *จำนวน:* ${data.totalDays} วัน\n` +
+                         `🔍 *เหตุผล:* ${data.reason}\n` +
+                         `🤝 *มอบงาน:* ${data.assignee}\n\n` +
+                         `📄 [คลิกเพื่อดูเอกสาร PDF](${pdfUrl})`;
+
+            try {
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: text,
+                        parse_mode: 'Markdown'
+                    })
+                });
+            } catch (err) {
+                console.error('Telegram notification failed:', err);
+            }
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            btn.disabled = true;
+            btn.innerText = 'กำลังประมวลผล...';
+            status.classList.remove('hidden', 'bg-red-100', 'text-red-700', 'bg-green-100', 'text-green-700');
+            status.classList.add('bg-blue-100', 'text-blue-700');
+            status.innerText = 'กำลังบันทึกข้อมูลและสร้างเอกสาร PDF...';
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            data.requestDateThai = formatThaiDateDisplay(data.requestDate);
+            data.startDateThai = formatThaiDateDisplay(data.startDate);
+            data.endDateThai = formatThaiDateDisplay(data.endDate);
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    // ส่งแจ้งเตือน Telegram
+                    await sendTelegramMessage(data, result.pdfUrl);
+
+                    status.classList.replace('bg-blue-100', 'bg-green-100');
+                    status.classList.replace('text-blue-700', 'text-green-700');
+                    status.innerHTML = `ส่งใบลาเรียบร้อยแล้วและบันทึกลิงก์ลงชีตแล้ว! <br> <a href="${result.pdfUrl}" target="_blank" class="underline font-bold text-lg">เปิดดูเอกสาร PDF ที่นี่</a>`;
+                    form.reset();
+                    document.getElementById('requestDate').valueAsDate = new Date();
+                } else {
+                    throw new Error(result.message || 'เกิดข้อผิดพลาดจากระบบ');
+                }
+            } catch (error) {
+                status.classList.replace('bg-blue-100', 'bg-red-100');
+                status.classList.replace('text-blue-700', 'text-red-700');
+                status.innerText = 'เกิดข้อผิดพลาด: ' + error.message;
+            } finally {
+                btn.disabled = false;
+                btn.innerText = 'ส่งใบลาและดาวน์โหลด PDF';
+            }
+        });
+    </script>
+</body>
+</html>
