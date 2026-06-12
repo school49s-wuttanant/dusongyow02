@@ -16,6 +16,10 @@
             border-radius: 1rem;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
+        /* ป้องกันการเลื่อนหน้าจอขณะวาดลายเซ็นบนมือถือ */
+        canvas {
+            touch-action: none;
+        }
     </style>
 </head>
 <body class="py-10 px-4">
@@ -64,7 +68,7 @@
                             <option value="นางนิฮาซีมะห์ ซี">
                             <option value="นายมาซีบี สะแวบาโง">
                             <option value="นายอุสมาน สาและ">
-                            <option value="นายมามะซักรี หะยีหูซอ">
+                            <option value="นายมามะซักรี หะยีมูซอ">
                             <option value="นางอาอีด๊ะ มะ">
                             <option value="นายซัมรี เจ๊ะแม">
                             <option value="นายเฮง มะดีเยาะ">
@@ -151,6 +155,22 @@
                     </div>
                 </div>
 
+                <!-- ลายเซ็นดิจิทัล -->
+                <div class="border rounded-lg p-4 bg-gray-50">
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="block text-sm font-medium text-gray-700">ลงลายมือชื่อผู้ขอลา <span class="text-red-500">*</span></label>
+                        <button type="button" id="clearSigBtn" class="text-xs bg-red-100 hover:bg-red-200 text-red-700 font-semibold py-1 px-3 rounded transition">
+                            ล้างลายเซ็น
+                        </button>
+                    </div>
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg overflow-hidden bg-white h-44 relative" id="canvasContainer">
+                        <canvas id="signatureCanvas" class="w-full h-full cursor-crosshair"></canvas>
+                        <div id="sigPlaceholder" class="absolute inset-0 flex items-center justify-center pointer-events-none text-gray-400 text-sm">
+                            ใช้นิ้วหรือเมาส์เซ็นชื่อในช่องนี้
+                        </div>
+                    </div>
+                </div>
+
                 <div class="pt-4">
                     <button type="submit" id="submitBtn" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition duration-200">
                         ส่งใบลาและดาวน์โหลด PDF
@@ -168,13 +188,94 @@
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzPBnMkS_UzJOIj-jfeLFiqVRZIIEAu6y71OrcMquDyQdzVU-JOLKlvL6rTcAhWVrsZ/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz1a_Kbvvtv--0Ovb5b3Qxy-ABGnYz9HexIXilJAEx4Kkf2Huj920A7iRdgObd8PyFm/exec';
         
         // --- Telegram Configuration ---
         const TELEGRAM_BOT_TOKEN = '8542087374:AAHrhLaRc6D7zPrZ09bEIG1mKNwtC52sbrM'; 
         const TELEGRAM_CHAT_ID = '1867755109';
 
-        // ฟังก์ชันคำนวณจำนวนวันอัตโนมัติ
+        // --- ลายเซ็นคอนฟิกและการตั้งค่า Canvas ---
+        const canvas = document.getElementById('signatureCanvas');
+        const container = document.getElementById('canvasContainer');
+        const ctx = canvas.getContext('2d');
+        const placeholder = document.getElementById('sigPlaceholder');
+        const clearBtn = document.getElementById('clearSigBtn');
+        let isDrawing = false;
+        let hasSigned = false;
+
+        function resizeCanvas() {
+            const rect = container.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+            
+            ctx.strokeStyle = '#1e3a8a'; 
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            
+            hasSigned = false;
+            placeholder.style.display = 'flex';
+        }
+
+        window.addEventListener('load', resizeCanvas);
+        window.addEventListener('resize', resizeCanvas);
+
+        function getCoordinates(e) {
+            const rect = canvas.getBoundingClientRect();
+            if (e.touches && e.touches.length > 0) {
+                return {
+                    x: e.touches[0].clientX - rect.left,
+                    y: e.touches[0].clientY - rect.top
+                };
+            } else {
+                return {
+                    x: e.clientX - rect.left,
+                    y: e.clientY - rect.top
+                };
+            }
+        }
+
+        function startDrawing(e) {
+            isDrawing = true;
+            hasSigned = true;
+            placeholder.style.display = 'none';
+            const coords = getCoordinates(e);
+            ctx.beginPath();
+            ctx.moveTo(coords.x, coords.y);
+            e.preventDefault();
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            const coords = getCoordinates(e);
+            ctx.lineTo(coords.x, coords.y);
+            ctx.stroke();
+            e.preventDefault();
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseleave', stopDrawing);
+
+        canvas.addEventListener('touchstart', startDrawing, { passive: false });
+        canvas.addEventListener('touchmove', draw, { passive: false });
+        canvas.addEventListener('touchend', stopDrawing);
+
+        clearBtn.addEventListener('click', () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            hasSigned = false;
+            placeholder.style.display = 'flex';
+        });
+
         function calculateDays() {
             const start = document.getElementById('startDate').value;
             const end = document.getElementById('endDate').value;
@@ -216,7 +317,6 @@
         const btn = document.getElementById('submitBtn');
         const status = document.getElementById('statusMessage');
 
-        // ฟังก์ชันส่งการแจ้งเตือนไปยัง Telegram
         async function sendTelegramMessage(data, pdfUrl) {
             if (!TELEGRAM_BOT_TOKEN) return;
 
@@ -248,6 +348,14 @@
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            if (!hasSigned) {
+                status.classList.remove('hidden', 'bg-blue-100', 'text-blue-700', 'bg-green-100', 'text-green-700');
+                status.classList.add('bg-red-100', 'text-red-700');
+                status.innerText = 'กรุณาลงลายมือชื่อของท่านก่อนส่งใบลา';
+                status.scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+
             btn.disabled = true;
             btn.innerText = 'กำลังประมวลผล...';
             status.classList.remove('hidden', 'bg-red-100', 'text-red-700', 'bg-green-100', 'text-green-700');
@@ -260,23 +368,32 @@
             data.requestDateThai = formatThaiDateDisplay(data.requestDate);
             data.startDateThai = formatThaiDateDisplay(data.startDate);
             data.endDateThai = formatThaiDateDisplay(data.endDate);
+            
+            data.signature = canvas.toDataURL('image/png');
 
             try {
+                // อัปเดตโครงสร้างการเรียกแบบ text/plain เพื่อข้ามปัญหา CORS ของ Apps Script
                 const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8',
+                    },
                     body: JSON.stringify(data)
                 });
 
                 const result = await response.json();
 
                 if (result.status === 'success') {
-                    // ส่งแจ้งเตือน Telegram
                     await sendTelegramMessage(data, result.pdfUrl);
 
                     status.classList.replace('bg-blue-100', 'bg-green-100');
                     status.classList.replace('text-blue-700', 'text-green-700');
                     status.innerHTML = `ส่งใบลาเรียบร้อยแล้วและบันทึกลิงก์ลงชีตแล้ว! <br> <a href="${result.pdfUrl}" target="_blank" class="underline font-bold text-lg">เปิดดูเอกสาร PDF ที่นี่</a>`;
                     form.reset();
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    hasSigned = false;
+                    placeholder.style.display = 'flex';
                     document.getElementById('requestDate').valueAsDate = new Date();
                 } else {
                     throw new Error(result.message || 'เกิดข้อผิดพลาดจากระบบ');
@@ -284,7 +401,7 @@
             } catch (error) {
                 status.classList.replace('bg-blue-100', 'bg-red-100');
                 status.classList.replace('text-blue-700', 'text-red-700');
-                status.innerText = 'เกิดข้อผิดพลาด: ' + error.message;
+                status.innerText = 'เกิดข้อผิดพลาด: ' + error.message + ' (โปรดตรวจสอบการ Deploy Web App เป็นแบบ Anyone)';
             } finally {
                 btn.disabled = false;
                 btn.innerText = 'ส่งใบลาและดาวน์โหลด PDF';
